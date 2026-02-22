@@ -70,7 +70,7 @@ The compiled JAR will be available in `build/libs/`
 
 ## Statistics
 
-[![bStats](https://bstats.org/signatures/bukkit/CelestCombat.svg)](https://bstats.org/plugin/bukkit/CelestCombat/25387)
+[![bStats](https://bstats.org/signatures/bukkit/CelestCombat-Pro/27299.svg)](https://bstats.org/plugin/bukkit/CelestCombat-Pro/27299)
 
 ## License
 
