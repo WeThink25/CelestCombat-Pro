@@ -1,69 +1,81 @@
 plugins {
     id 'java'
-    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
 }
 
 group = 'com.shyamstudio'
-version = '1.0.0'
+version = '1.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
+
     maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
+        name = 'papermc'
+        url = uri('https://repo.papermc.io/repository/maven-public/')
     }
+
     maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
+        name = 'enginehub'
+        url = uri('https://maven.enginehub.org/repo/')
     }
+
     maven {
-        name = "enginehub"
-        url = "https://maven.enginehub.org/repo/"
+        name = 'sonatype'
+        url = uri('https://oss.sonatype.org/content/groups/public/')
     }
-    maven { name = "jitpack"; url = "https://jitpack.io" }
+
+    maven {
+        name = 'jitpack'
+        url = uri('https://jitpack.io')
+    }
+}
+
+
+configurations.all {
+    resolutionStrategy {
+        force(
+            'com.google.guava:guava:33.3.1-jre',
+            'com.google.code.gson:gson:2.11.0',
+            'it.unimi.dsi:fastutil:8.5.15'
+        )
+    }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
-    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.13-SNAPSHOT'
+
+    compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
+
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.4.0-SNAPSHOT'
-    implementation 'com.github.GriefPrevention:GriefPrevention:17.0.0'
-}
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.13-SNAPSHOT'
 
-tasks {
-    runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("1.21")
-    }
-}
 
-def targetJavaVersion = 21
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
+    compileOnly 'com.github.GriefPrevention:GriefPrevention:17.0.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
+    options.release.set(21)
 }
 
 processResources {
-    def props = [version: version]
-    inputs.properties props
+    inputs.property 'version', version
     filteringCharset 'UTF-8'
+
     filesMatching('plugin.yml') {
-        expand props
+        expand version: version
     }
+}
+
+
+tasks.runServer {
+    minecraftVersion '1.21'
 }

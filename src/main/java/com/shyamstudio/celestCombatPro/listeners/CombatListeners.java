@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -52,6 +53,23 @@ public class CombatListeners implements Listener {
         this.killRewardManager = plugin.getKillRewardManager();
         this.deathAnimationManager = plugin.getDeathAnimationManager();
         this.messageService = plugin.getMessageService();
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
+
+        // Only block explosion-style damage types inside safe zones
+        EntityDamageEvent.DamageCause cause = event.getCause();
+        if (cause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
+                || cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
+            if (CelestCombatPro.getInstance().getWorldGuardHook() != null
+                    && CelestCombatPro.getInstance().getWorldGuardHook().isLocationInSafeZone(player.getLocation())) {
+                event.setCancelled(true);
+                plugin.debug("Cancelled explosion damage in safe zone for: " + player.getName());
+            }
+        }
     }
 
     /**

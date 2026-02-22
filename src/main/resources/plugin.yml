@@ -1,8 +1,8 @@
 name: CelestCombat-Pro
-version: '1.0.0'
+version: '1.1.0'
 main: com.shyamstudio.celestCombatPro.CelestCombatPro
 api-version: '1.21'
-authors: [ RaviRai, Nighter ]
+authors: [ RaviRai, Nighter, WeThink ]
 description: A simple combat logging plugins
 folia-supported: true
 
