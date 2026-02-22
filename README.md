@@ -1,10 +1,10 @@
 # CelestCombat
 
-[![Modrinth Downloads](https://img.shields.io/modrinth/dt/celest-combat-plugin?logo=modrinth&logoColor=white&label=downloads&labelColor=%23139549&color=%2318c25f)](https://modrinth.com/plugin/celest-combat-plugin)
-[![Spigot Downloads](https://img.shields.io/spiget/downloads/123515?logo=spigotmc&logoColor=white&label=spigot%20downloads&labelColor=%23ED8106&color=%23FF994C)](https://www.spigotmc.org/resources/celest-combat-combat-log-%E2%9C%A8-1-21-1-21-4-%EF%B8%8F.123515/)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/celestcombat-pro?logo=modrinth&logoColor=white&label=downloads&labelColor=%23139549&color=%2318c25f)](https://modrinth.com/plugin/celestcombat-pro)
+
 [![Folia](https://img.shields.io/badge/Folia-Supported-brightgreen.svg?logo=papermc&logoColor=white&labelColor=%23139549&color=%2318c25f)](https://github.com/PaperMC/Folia)
 
-[![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/celest-combat-plugin)
+[![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/celestcombat-pro)
 [![Spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/spigot_vector.svg)](https://www.spigotmc.org/resources/celest-combat-combat-log-%E2%9C%A8-1-21-1-21-4-%EF%B8%8F.123515/)
 [![Hangar](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/hangar_vector.svg)](https://hangar.papermc.io/Nighter/CelestCombat)
 
@@ -22,7 +22,7 @@ A comprehensive combat management plugin for Minecraft servers specializing in P
 
 ## Installation
 
-1. Download the latest release from [Modrinth](https://modrinth.com/plugin/celest-combat-plugin)
+1. Download the latest release from [Modrinth](https://modrinth.com/plugin/celestcombat-pro)
 2. Place the `.jar` file in your server's `plugins` folder
 3. Restart your server
 4. Configure the plugin in `plugins/CelestCombat/config.yml`

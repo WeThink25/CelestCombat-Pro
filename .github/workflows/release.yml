@@ -1,0 +1,60 @@
+name: Create Dev Build Release
+
+on:
+  release:
+    types: [created, published]
+
+jobs:
+  dev-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: gradle
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Build with Gradle
+      run: ./gradlew build
+    
+    - name: Get commit info
+      id: commit-info
+      run: |
+        COMMIT_SHA=$(git rev-parse HEAD)
+        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+        BUILD_NUMBER=${{ github.run_number }}
+        echo "commit=$COMMIT_SHA" >> $GITHUB_OUTPUT
+        echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+    
+    - name: Upload JAR to Release
+      uses: softprops/action-gh-release@v1
+      if: success()
+      with:
+        files: build/libs/*.jar
+        body: |
+          🚧 Development Build
+          
+          This is an automated dev build generated from the latest commit.
+          
+          🔹 Branch: ${{ steps.commit-info.outputs.branch }}
+          🔹 Commit: ${{ steps.commit-info.outputs.commit }}
+          🔹 Build Number: ${{ steps.commit-info.outputs.build_number }}
+          
+          🐛 Found a bug? Report it here:
+          ${{ github.server_url }}/${{ github.repository }}/issues
+          
+          ⚠️ This build may contain bugs. Use for testing only.
+        draft: false
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

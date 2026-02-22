@@ -382,16 +382,25 @@ public class WorldGuardHook implements Listener {
     }
 
     private void pushPlayerBack(Player player, Location from, Location to) {
-        Vector direction = from.toVector().subtract(to.toVector()).normalize();
-        direction.multiply(pushBackForce);
+        if (player == null || from == null) return;
 
-        Location pushLocation = player.getLocation().clone();
-        pushLocation.add(direction);
-        pushLocation.setY(getSafeY(pushLocation));
-        pushLocation.setPitch(player.getLocation().getPitch());
-        pushLocation.setYaw(player.getLocation().getYaw());
+        // Teleport player back to the last non-safe location (from) and stop their momentum.
+        Location safeLocation = from.clone();
+        safeLocation.setPitch(player.getLocation().getPitch());
+        safeLocation.setYaw(player.getLocation().getYaw());
 
-        player.setVelocity(direction);
+        // Use teleportAsync for non-blocking behavior and clear velocity when done.
+        player.teleportAsync(safeLocation).thenAccept(success -> {
+            try {
+                player.setVelocity(new Vector(0, 0, 0));
+            } catch (Exception ignored) {
+            }
+        });
+    }
+
+    // Public helper so other components can check safezone status
+    public boolean isLocationInSafeZone(Location location) {
+        return isSafeZone(location);
     }
 
     private double getSafeY(Location loc) {
