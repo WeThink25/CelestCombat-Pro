@@ -4,9 +4,7 @@
 
 [![Folia](https://img.shields.io/badge/Folia-Supported-brightgreen.svg?logo=papermc&logoColor=white&labelColor=%23139549&color=%2318c25f)](https://github.com/PaperMC/Folia)
 
-[![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/celestcombat-pro)
-[![Spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/spigot_vector.svg)](https://www.spigotmc.org/resources/celest-combat-combat-log-%E2%9C%A8-1-21-1-21-4-%EF%B8%8F.123515/)
-[![Hangar](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/hangar_vector.svg)](https://hangar.papermc.io/Nighter/CelestCombat)
+
 
 A comprehensive combat management plugin for Minecraft servers specializing in PvP environments.
 

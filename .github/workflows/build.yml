@@ -47,3 +47,58 @@ jobs:
             repo: context.repo.repo,
             body: '✅ **Build Successful**\n\nJAR artifact has been generated and is ready for testing.'
           })
+
+  # ---------------------------------------------------------------------------------------
+  # A follow-up job will automatically create a "development" release when the build
+  # completes successfully.  This implements the user request:
+  # "update work flow if build get sucess automatic dev build will realse"
+  # ---------------------------------------------------------------------------------------
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    # only run on a successful build; you may also restrict to certain branches if desired
+    if: needs.build.result == 'success'
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Download JAR artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: CelestCombat-Pro-build-${{ github.run_number }}
+
+    - name: Get commit info
+      id: commit-info
+      run: |
+        COMMIT_SHA=$(git rev-parse HEAD)
+        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+        BUILD_NUMBER=${{ github.run_number }}
+        echo "commit=$COMMIT_SHA" >> $GITHUB_OUTPUT
+        echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+
+    - name: Create development release
+      uses: softprops/action-gh-release@v1
+      if: success()
+      with:
+        tag_name: dev-build-${{ github.run_number }}
+        name: Dev Build ${{ github.run_number }}
+        files: build/libs/*.jar
+        body: |
+          🚧 **Development Build**
+          
+          This release was created automatically after a successful build.
+          
+          🔹 **Branch:** ${{ steps.commit-info.outputs.branch }}
+          🔹 **Commit:** ${{ steps.commit-info.outputs.commit }}
+          🔹 **Build Number:** ${{ steps.commit-info.outputs.build_number }}
+          
+          ⚠️ This is a prerelease intended for testing only and may contain bugs.
+
+        draft: false
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
