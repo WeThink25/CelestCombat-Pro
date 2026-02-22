@@ -48,16 +48,11 @@ jobs:
             body: '✅ **Build Successful**\n\nJAR artifact has been generated and is ready for testing.'
           })
 
-  # ---------------------------------------------------------------------------------------
-  # A follow-up job will automatically create a "development" release when the build
-  # completes successfully.  This implements the user request:
-  # "update work flow if build get sucess automatic dev build will realse"
-  # ---------------------------------------------------------------------------------------
+
 
   release:
     needs: build
     runs-on: ubuntu-latest
-    # only run on a successful build; you may also restrict to certain branches if desired
     if: needs.build.result == 'success'
 
     steps:
